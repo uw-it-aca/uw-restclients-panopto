@@ -8,7 +8,6 @@ def get_scheduled_recordings(id):
     """
     Return a restclients.models.panopto.scheduledRecordings object
     """
-
     url = "{}/{}".format(
         panopto_url("scheduledRecordings"), id)
 
