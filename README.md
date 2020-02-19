@@ -10,7 +10,7 @@ Installation:
 
 To use this client, you'll need these settings in your application or script:
 
-   RESTCLIENTS_PANOPTO_HOST='https://...'
+   RESTCLIENTS_PANOPTO_HOST='https://...'  
    RESTCLIENTS_PANOPTO_AUTH_TOKEN='<authorization_token>'
 
 Optional settings:

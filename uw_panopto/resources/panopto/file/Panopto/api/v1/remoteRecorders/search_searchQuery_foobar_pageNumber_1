@@ -1,0 +1,13 @@
+{
+  "Results": [
+    {
+      "Id": "00000000-0000-0000-0000-000000000013",
+      "Name": "Recording3",
+      "State": "RecorderRunning",
+      "DefaultRecordingFolder": {
+        "Id": "10000000-0000-0000-0000-000000000000",
+        "Name": "DefaultFolder"
+      }
+    }
+  ]
+}

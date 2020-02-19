@@ -1,0 +1,18 @@
+{
+  "Results": [
+    {
+      "Id": "00000000-0101-0101-0101-010000000060",
+      "Name": "MyFolder",
+      "Description": "Folder of my stuff",
+      "ParentFolder": {
+        "Id": "00000000-0202-0202-0202-020000000020",
+        "Name": "ParentFolder"
+      },
+      "Urls": {
+        "FolderUrl": "string",
+        "EmbedUrl": "string",
+        "ShareSettingsUrl": "string"
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+    "Results": [
+        {
+            "Id": "00000000-0100-0100-0100-010000000000",
+            "Name": "string",
+            "Description": "string",
+            "StartTime": "2020-02-19T02:19:52.103Z",
+            "CreatedBy": {
+                "Id": "00000000-0100-0100-0100-010000000000",
+                "Username": "patientzero"
+            },
+            "Urls": {
+                "ViewerUrl": "string",
+                "EmbedUrl": "string",
+                "ShareSettingsUrl": "string",
+                "DownloadUrl": "string",
+                "CaptionDownloadUrl": "string",
+                "EditorUrl": "string",
+                "ThumbnailUrl": "string"
+            },
+            "Folder": "string",
+            "Context": [
+                {
+                    "Text": "string",
+                    "Time": 0,
+                    "ThumbnailUrl": "string"
+                }
+            ]
+        }
+    ]
+}

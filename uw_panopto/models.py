@@ -3,8 +3,51 @@ from dateutil.parser import parse
 import json
 
 
+class RemoteRecorder(models.Model):
+    RECORDING_STATE_STOPPED = "Stopped"
+    RECORDING_STATE_PREVIEWING = "Previewing"
+    RECORDING_STATE_PAUSED = "Paused"
+    RECORDING_STATE_FAULTED = "Faulted"
+    RECORDING_STATE_Disconnected = "Disconnected"
+    RECORDING_STATE_RECORDERRUNNING = "RecorderRunning"
+
+    RECORDING_STATE_CHOICES = (
+        (RECORDING_STATE_STOPPED, "Stopped"),
+        (RECORDING_STATE_PREVIEWING, "Previewing"),
+        (RECORDING_STATE_PAUSED, "Paused"),
+        (RECORDING_STATE_FAULTED, "Faulted"),
+        (RECORDING_STATE_Disconnected, "Disconnected"),
+        (RECORDING_STATE_RECORDERRUNNING, "RecorderRunning"),
+    )
+
+    id = models.CharField(max_length=36)
+    name = models.CharField(max_length=256)
+    state = models.CharField(max_length=16, choices=RECORDING_STATE_CHOICES)
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(RemoteRecorder, self).__init__(*args, **kwargs)
+
+        self.id = data.get("Id")
+        self.name = data.get("Name")
+        self.state = dict(self.RECORDING_STATE_CHOICES)[data.get("State")]
+        self.default_recording_folder = RecordingFolder(
+            data=data.get("DefaultRecordingFolder"))
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'state': dict(self.RECORDING_STATE_CHOICES)[self.state]
+        }
+
+    def __str__(self):
+        return json.dumps(self.to_json())
+
+
 class RecordingFolder(models.Model):
-    id = models.CharField(max_length=32)
+    id = models.CharField(max_length=36)
     name = models.CharField(max_length=256)
 
     def __init__(self, *args, **kwargs):
@@ -25,56 +68,10 @@ class RecordingFolder(models.Model):
         return json.dumps(self.to_json())
 
 
-class RemoteRecorder(models.Model):
-    RECORDING_STATE_STOPPED = "Stopped"
-    RECORDING_STATE_PREVIEWING = "Previewing"
-    RECORDING_STATE_PAUSED = "Paused"
-    RECORDING_STATE_FAULTED = "Faulted"
-    RECORDING_STATE_Disconnected = "Disconnected"
-    RECORDING_STATE_RECORDERRUNNING = "RecorderRunning"
-
-    RECORDING_STATE_CHOICES = (
-        (RECORDING_STATE_STOPPED, "Stopped"),
-        (RECORDING_STATE_PREVIEWING, "Previewing"),
-        (RECORDING_STATE_PAUSED, "Paused"),
-        (RECORDING_STATE_FAULTED, "Faulted"),
-        (RECORDING_STATE_Disconnected, "Disconnected"),
-        (RECORDING_STATE_RECORDERRUNNING, "RecorderRunning"),
-    )
-
-    id = models.CharField(max_length=32)
-    name = models.CharField(max_length=256)
-    state = models.CharField(max_length=16, choices=RECORDING_STATE_CHOICES)
-    default_recording_folder = models.ForeignKey(RecordingFolder,
-                                                 on_delete=models.PROTECT)
-
-    def __init__(self, *args, **kwargs):
-        data = kwargs.get("data")
-        if data is None:
-            return super(RemoteRecorder, self).__init__(*args, **kwargs)
-
-        self.id = data.get("Id")
-        self.name = data.get("Name")
-        self.state = dict(self.RECORDING_STATE_CHOICES)[data.get("State")]
-        self.default_recording_folder = RecordingFolder(
-            data=data.get("DefaultRecordingFolder"))
-
-    def to_json(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'state': dict(self.RECORDING_STATE_CHOICES)[self.state],
-            'default_recording_folder': self.default_recording_folder.to_json()
-        }
-
-    def __str__(self):
-        return json.dumps(self.to_json())
-
-
 class RecorderScheduledEntry(models.Model):
-    id = models.CharField(max_length=32)
+    id = models.CharField(max_length=36)
     name = models.CharField(max_length=256)
-    recorder_id = models.CharField(max_length=32)
+    recorder_id = models.CharField(max_length=36)
     suppress_primary_capture = models.BooleanField(default=False)
     suppress_secondary_capture = models.BooleanField(default=False)
     recorder_description = models.CharField(max_length=256)
@@ -108,7 +105,7 @@ class RecorderScheduledEntry(models.Model):
 
 
 class ScheduledRecording(models.Model):
-    id = models.CharField(max_length=32)
+    id = models.CharField(max_length=36)
     name = models.CharField(max_length=256)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
@@ -139,7 +136,7 @@ class ScheduledRecording(models.Model):
 
 
 class Session(models.Model):
-    id = models.CharField(max_length=32)
+    id = models.CharField(max_length=36)
     name = models.CharField(max_length=256)
     description = models.CharField(max_length=256)
     start_time = models.DateTimeField(null=True)
@@ -171,7 +168,7 @@ class Session(models.Model):
 
 
 class SessionCreator(models.Model):
-    id = models.CharField(max_length=32)
+    id = models.CharField(max_length=36)
     user_name = models.CharField(max_length=128)
 
     def __init__(self, *args, **kwargs):
@@ -237,7 +234,7 @@ class SessionContext(models.Model):
     def __init__(self, *args, **kwargs):
         data = kwargs.get("data")
         if data is None:
-            return super(SessionUrls, self).__init__(*args, **kwargs)
+            return super(SessionContext, self).__init__(*args, **kwargs)
 
         self.text = data.get("Text")
         self.time = int(data.get("Time"))
@@ -248,6 +245,56 @@ class SessionContext(models.Model):
             'text': self.text,
             'time': self.time,
             'thumbnail_url': self.thumbnail_url
+        }
+
+    def __str__(self):
+        return json.dumps(self.to_json())
+
+
+class Folder(models.Model):
+    id = models.CharField(max_length=36)
+    name = models.CharField(max_length=256)
+    description = models.CharField(max_length=256)
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(Folder, self).__init__(*args, **kwargs)
+
+        self.id = data.get("Id")
+        self.name = data.get("Name")
+        self.description = data.get("Description")
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description
+        }
+
+    def __str__(self):
+        return json.dumps(self.to_json())
+
+
+class FolderUrls(models.Model):
+    folder_url = models.CharField(max_length=256)
+    embed_url = models.CharField(max_length=256)
+    share_settings_url = models.CharField(max_length=256)
+
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get("data")
+        if data is None:
+            return super(FolderUrls, self).__init__(*args, **kwargs)
+
+        self.folder_url = data.get("FolderUrl")
+        self.embed_url = data.get("EmbedUrl")
+        self.share_settings_url = data.get("ShareSettingsUrl")
+
+    def to_json(self):
+        return {
+            'folder_url': self.folder_url,
+            'embed_url': self.embed_url,
+            'share_settings_url': self.share_settings_url
         }
 
     def __str__(self):

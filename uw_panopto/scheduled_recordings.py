@@ -6,48 +6,13 @@ import json
 
 def get_scheduled_recordings(id):
     """
-    Return a restclients.models.panopto.scheduledRecordings object
+    Get the scheduled recording information for a session
     """
     url = "{}/{}".format(
         panopto_url("scheduledRecordings"), id)
 
     response = json.loads(get_resource(url))
     return _scheduled_recordings(response)
-
-
-def update_scheduled_recording_times(id, start_time=None, end_time=None):
-    """
-    Update the start or end time of a scheduled recording
-    """
-
-    if not start_time or end_time:
-        return
-
-    url = "{}/{}".format(
-        panopto_url("scheduledRecordings"), id)
-
-    times = {}
-
-    if start_time:
-        times["StartTime"] = str(start_time)
-
-    if end_time:
-        times["EndTime"] = str(end_time)
-
-    response = put_resource(url, times)
-
-    return _scheduled_recordings(response)
-
-
-def delete_scheduled_recording(id):
-    """
-    Delete a scheduled recording
-    """
-
-    url = "{}/{}".format(
-        panopto_url("scheduledRecordings"), id)
-
-    delete_resource(url)
 
 
 def create_scheduled_recording(name=None, description=None,
@@ -87,11 +52,46 @@ def create_scheduled_recording(name=None, description=None,
     return _scheduled_recordings(response)
 
 
-def _scheduled_recordings(response):
-    scheduled_recordings = ScheduledRecording(data=response)
+def update_scheduled_recording_times(id, start_time=None, end_time=None):
+    """
+    Update the start or end time of a scheduled recording
+    """
+
+    if not start_time and not end_time:
+        raise Exception("Incomplete scheduled recording update")
+
+    url = "{}/{}".format(
+        panopto_url("scheduledRecordings"), id)
+
+    times = {}
+
+    if start_time:
+        times["StartTime"] = str(start_time)
+
+    if end_time:
+        times["EndTime"] = str(end_time)
+
+    response = put_resource(url, times)
+
+    return _scheduled_recordings(response)
+
+
+def delete_scheduled_recording(id):
+    """
+    Delete a scheduled recording
+    """
+
+    url = "{}/{}".format(
+        panopto_url("scheduledRecordings"), id)
+
+    delete_resource(url)
+
+
+def _scheduled_recordings(scheduled_recording_data):
+    scheduled_recordings = ScheduledRecording(data=scheduled_recording_data)
     scheduled_recordings.recorder_schedule_entries = []
 
-    for rse in response['RecorderScheduleEntries']:
+    for rse in scheduled_recording_data['RecorderScheduleEntries']:
         scheduled_recordings.recorder_schedule_entries.append(
             RecorderScheduledEntry(data=rse))
 
