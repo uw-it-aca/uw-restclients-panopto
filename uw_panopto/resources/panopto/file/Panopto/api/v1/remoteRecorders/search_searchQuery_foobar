@@ -1,0 +1,22 @@
+{
+  "Results": [
+    {
+      "Id": "00000000-0000-0000-0000-000000000011",
+      "Name": "Recording1",
+      "State": "Stopped",
+      "DefaultRecordingFolder": {
+        "Id": "10000000-0000-0000-0000-000000000000",
+        "Name": "DefaultFolder"
+      }
+    },
+    {
+      "Id": "00000000-0000-0000-0000-000000000012",
+      "Name": "Recording2",
+      "State": "RecorderRunning",
+      "DefaultRecordingFolder": {
+        "Id": "10000000-0000-0000-0000-000000000000",
+        "Name": "DefaultFolder"
+      }
+    }
+  ]
+}

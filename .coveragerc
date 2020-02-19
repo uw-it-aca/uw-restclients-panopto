@@ -1,0 +1,4 @@
+[run]
+branch = True
+source = uw_panopto/
+include = uw_panopto/*
