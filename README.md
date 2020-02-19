@@ -2,7 +2,7 @@
 # UW-RestClients-Panopto
 
 [![Build Status](https://travis-ci.com/uw-it-aca/uw-restclients-panopto.svg?branch=master)](https://travis-ci.com/uw-it-aca/uw-restclients-panopto)
-[![Coverage Status](https://coveralls.io/repos/uw-it-aca/uw-restclients-panopto/badge.png?branch=master)](https://coveralls.io/r/uw-it-aca/uw-restclients-panopto?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/uw-it-aca/uw-restclients-panopto/badge.svg?branch=master)](https://coveralls.io/github/uw-it-aca/uw-restclients-panopto?branch=master)
 
 Installation:
 
