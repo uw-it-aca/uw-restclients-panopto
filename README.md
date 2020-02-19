@@ -1,7 +1,7 @@
 # REST client for the UW HRP Web Service
 # UW-RestClients-Panopto
 
-[![Build Status](https://api.travis-ci.org/uw-it-aca/uw-restclients-panopto.svg?branch=master)](https://travis-ci.org/uw-it-aca/uw-restclients-panopto)
+[![Build Status](https://travis-ci.com/uw-it-aca/uw-restclients-panopto.svg?branch=master)](https://travis-ci.com/uw-it-aca/uw-restclients-panopto)
 [![Coverage Status](https://coveralls.io/repos/uw-it-aca/uw-restclients-panopto/badge.png?branch=master)](https://coveralls.io/r/uw-it-aca/uw-restclients-panopto?branch=master)
 
 Installation:
