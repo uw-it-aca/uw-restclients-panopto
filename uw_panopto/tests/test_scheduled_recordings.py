@@ -4,10 +4,10 @@ from uw_panopto.util import fdao_panopto_override
 
 
 @fdao_panopto_override
-class TestRemoteRecorders(TestCase):
+class TestScheduledRecordings(TestCase):
 
     def test_get_scheduled_recordings(self):
-        recorderings = get_scheduled_recordings(
+        recordings = get_scheduled_recordings(
             '00000000-1000-1000-1000-000000000000')
 
-        self.assertTrue(len(recorderings.recorder_schedule_entries) == 1)
+        self.assertTrue(len(recordings.recorder_schedule_entries) == 1)
